@@ -1,0 +1,14 @@
+{
+    "name": "namelesscoder/typo3-cms-fluid-precompiler",
+    "require": {
+        "typo3/cms": "^8.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "NamelessCoder\\CmsFluidPrecompiler\\": "src/"
+        }
+    },
+    "bin": [
+        "bin/fluid-precompile"
+    ]
+}

@@ -1,0 +1,33 @@
+#!/usr/bin/env php
+<?php
+
+// $_SERVER['argv'][0] contains the exact command used to call this binary.
+$pwd = rtrim($_SERVER['PWD'], '/') . '/';
+$entry = $_SERVER['argv'][0];
+
+if (strpos($entry, '/') === 0) {
+    // absolute path - assume that root is the folder one level above the LAST "/bin/" segment
+    $path = substr($entry, 0, strrpos($entry, '/bin/') + 1);
+} elseif (strpos($entry, '.') === 0) {
+    // relative path with dot prefix. Assume that if the path contains a "/bin/" segment,
+    // the target folder is exactly one level above that folder. If it does not, assume that
+    // the root folder is exactly one level above
+    $entry = ltrim($entry, './');
+    $path = substr($pwd . $entry, 0, strrpos($pwd . $entry, '/bin/') + 1);
+} elseif (strpos($entry, '.') !== 0) {
+    // Path is neither absolute nor dot-prefixed, but is a relative path without prefix. Calculate the
+    // path based on $pwd.$entry
+    $path = substr($pwd . $entry, 0, strrpos($pwd . $entry, '/bin/') + 1);
+} elseif (strpos($entry, '/') === false) {
+    // Path is only the filename - we then only need to consider $pwd as the path to our script.
+    $path = substr($pwd, 0, strrpos($pwd, '/bin/') + 1);
+} else {
+    // Fallback, assumed path when installed normally in vendor directory.
+    $path = __DIR__ . '/../../../';
+}
+
+$classLoader = require $path . '/autoload.php';
+
+(new \NamelessCoder\CmsFluidPrecompiler\ExternalApplication($classLoader));
+
+(new NamelessCoder\CmsFluidPrecompiler\FluidPrecompiler())->compile(array_slice($argv, 1));
