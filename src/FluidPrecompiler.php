@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace NamelessCoder\CmsFluidPrecompiler;
 
-use SebastianBergmann\CodeCoverage\Report\PHP;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
@@ -99,7 +98,6 @@ class FluidPrecompiler
                     }
 
                 }
-                #echo PHP_EOL;
             }
         }
         if (!$arguments['verbose'] && !$arguments['silent']) {
